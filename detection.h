@@ -1391,6 +1391,7 @@ int qualifyVar (acfStruct *acfStructure, noiseStruct *noiseStructure, controlStr
 
 	int num;
 
+	/*
 	FILE *fin1, *fin2;
 
 	if ((fin1=fopen("varHis", "w"))==NULL)
@@ -1404,6 +1405,7 @@ int qualifyVar (acfStruct *acfStructure, noiseStruct *noiseStructure, controlStr
 		printf ("Can't open file...\n");
 		exit(1);
 	}
+	*/
 
 	//for (i=0; i<100; i++)
 	//{
@@ -1419,7 +1421,7 @@ int qualifyVar (acfStruct *acfStructure, noiseStruct *noiseStructure, controlStr
 	{
 		m[i] = moduIndex (acfStructure->dynPlot[i], nsub*nchan);
 		var[i] = variance (acfStructure->dynPlot[i], nsub*nchan);
-		fprintf (fin1, "%f\n", var[i]);
+		//fprintf (fin1, "%f\n", var[i]);
 		//printf ("%f \n", m[i]);
 	}
 
@@ -1436,9 +1438,10 @@ int qualifyVar (acfStruct *acfStructure, noiseStruct *noiseStructure, controlStr
 	for (i=0; i<n_n; i++)
 	{
 		var_n[i] = variance (noiseStructure->noisePlot[i], nsub*nchan);
-		fprintf (fin2, "%f\n", var_n[i]);
+		//fprintf (fin2, "%f\n", var_n[i]);
 	}
 
+	/*
 	if (fclose(fin1))
 	{
 		printf ("Can't close file...\n");
@@ -1450,6 +1453,7 @@ int qualifyVar (acfStruct *acfStructure, noiseStruct *noiseStructure, controlStr
 		printf ("Can't close file...\n");
 		exit(1);
 	}
+	*/
 
 	m0 = 0.0;
 	meanVar = 0.0;
