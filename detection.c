@@ -137,6 +137,9 @@ int main (int argc, char* argv[])
 			}
 		}
 
+		fflush (stdout);
+		MPI_Finalize ();
+
 		printf ("Threshold: %f \n", noiseStructure.detection);
 		// deallocate memory
 		deallocateMemory (&acfStructure, &noiseStructure);
