@@ -6,7 +6,7 @@
 ////#include <gsl/gsl_randist.h>
 #include <fftw3.h>
 #include "T2toolkit.h"
-#include "cpgplot.h"
+//#include "cpgplot.h"
 //#include <omp.h>
 
 typedef struct acfStruct {
@@ -99,9 +99,9 @@ int readParams(char *fname, char *dname, int n, controlStruct *control);
 //int readParams(char *fname, char *oname, char *dname, int n, controlStruct *control);
 void initialiseControl(controlStruct *control);
 
-void heatMap (acfStruct *acfStructure, char *dname);
-void palett(int TYPE, float CONTRA, float BRIGHT);
-int plotDynSpec (char *pname, char *dname);
+//void heatMap (acfStruct *acfStructure, char *dname);
+//void palett(int TYPE, float CONTRA, float BRIGHT);
+//int plotDynSpec (char *pname, char *dname);
 
 int qualifyVar (acfStruct *acfStructure, noiseStruct *noiseStructure, controlStruct *control);
 float chiSquare (float *data, int n, float noise);
@@ -1102,259 +1102,259 @@ void initialiseControl(controlStruct *control)
   // Note that the DM comes from the ephemeris
 }
 
-void heatMap (acfStruct *acfStructure, char *dname)
-{
-	//int i,j;                     
-	//int dimx = acfStructure.ns;
-	//int dimy = acfStructure.nf; // dimensions 
-	//float tab[dimx*dimy];       // value
-	char caption[1024];
-	sprintf (caption, "%s %.2f %s %s %.2f %s %s %.2f %s", "Freq:", acfStructure->cFreq, "MHz", "BW:", acfStructure->bw, "MHz", "Length:", acfStructure->tint, "s");
-  
-	float zmin,zmax;            /* min et max des valeurs de la fonction */
-	float tr[6];                /* matrice utilisee par pgimag */
+//void heatMap (acfStruct *acfStructure, char *dname)
+//{
+//	//int i,j;                     
+//	//int dimx = acfStructure.ns;
+//	//int dimy = acfStructure.nf; // dimensions 
+//	//float tab[dimx*dimy];       // value
+//	char caption[1024];
+//	sprintf (caption, "%s %.2f %s %s %.2f %s %s %.2f %s", "Freq:", acfStructure->cFreq, "MHz", "BW:", acfStructure->bw, "MHz", "Length:", acfStructure->tint, "s");
+//  
+//	float zmin,zmax;            /* min et max des valeurs de la fonction */
+//	float tr[6];                /* matrice utilisee par pgimag */
+//
+//	int dimx = acfStructure->nsubint;
+//	int dimy = acfStructure->nchn;
+//	double bw = acfStructure->bw;
+//  
+//
+//	float heat_l[] = {0.0, 0.2, 0.4, 0.6, 1.0};
+//	float heat_r[] = {0.0, 0.5, 1.0, 1.0, 1.0};
+//	float heat_g[] = {0.0, 0.0, 0.5, 1.0, 1.0};
+//	float heat_b[] = {0.0, 0.0, 0.0, 0.3, 1.0};
+//
+//	double f1 = acfStructure->cFreq-bw/2.0-2.0*bw/dimy; // MHz
+//	double f2 = acfStructure->cFreq+bw/2.0-2.0*bw/dimy; // MHz
+//	//printf ("f1 f2: %lf %lf\n", f1, f2);
+//
+//	zmin=0; 
+//	zmax=find_peak_value (dimx*dimy, acfStructure->dynPlot[0]);
+//	//double f1 = 1241; // MHz
+//	//double f2 = 1497; // MHz
+//	/*The transformation matrix TR is used to calculate the world
+//	coordinates of the center of the "cell" that represents each
+//	array element. The world coordinates of the center of the cell
+//	corresponding to array element A(I,J) are given by:
+//	X = TR(1) + TR(2)*I + TR(3)*J
+//	Y = TR(4) + TR(5)*I + TR(6)*J
+//	Usually TR(3) and TR(5) are zero -- unless the coordinate
+//	transformation involves a rotation or shear.  The corners of the
+//	quadrilateral region that is shaded by PGIMAG are given by
+//	applying this transformation to (I1-0.5,J1-0.5), (I2+0.5, J2+0.5).*/
+//  
+//	//tr[0]=0;
+//	//tr[1]=(float)(dimy)/dimx;
+//	//tr[2]=0;
+//	//tr[3]=0;
+//	//tr[4]=0;
+//	//tr[5]=1;
+//  
+//	tr[0]=-0.5;
+//       	tr[1]=1;
+//       	tr[2]=0;
+//      	tr[3]=f2+0.5;
+//      	tr[4]=0;
+//      	tr[5]=-bw/dimy;
+//
+//	// plot 
+//	//cpgbeg(0,"?",1,1);
+//	cpgbeg(0,dname,1,1);
+//	//cpgbeg(0,"2/xs",1,1);
+//      	cpgsch(1.2); // set character height
+//      	cpgscf(2); // set character font
+//	//cpgswin(0,dimx,164,132); // set window
+//	cpgswin(0,dimx,f2,f1); // set window
+//	//cpgsvp(0.1,0.9,0.1,0.9); // set viewport
+//      	//cpgenv(1,dimx,f1,f2,0,0); // set window and viewport and draw labeled frame
+//	cpgbox("BCTSIN",4,4,"BCTSIN",16,8);
+//	//cpgbox("BCTSIN",10,5,"BCTSIN",50,5);
+//      	cpglab("Subintegration","Frequency (MHz)",caption);
+//      	//cpglab("Subintegration","Frequency (MHz)","Freq: 150.0 MHz BW: -32.000 MHz Length: 960.0 s");
+//	//cpgtick(0,0,1024,0,1.0/64,0.1,0.2,0,0,"1");
+//	//palett(3, -0.4, 0.3);
+//	//cpgimag(tab,dimx,dimy,1,dimx,1,dimy,zmin,zmax,tr);
+//	cpgctab(heat_l,heat_r,heat_g,heat_b,5,1.0,0.5);
+//	cpgimag(acfStructure->dynPlot[0],dimx,dimy,1,dimx,1,dimy,zmin,zmax,tr);
+//	//cpggray(acfStructure->dynPlot,dimx,dimy,1,dimx,1,dimy,zmin,zmax,tr);
+//
+//	cpgend();
+//} 
+//
+//void palett(int TYPE, float CONTRA, float BRIGHT)
+//{
+////-----------------------------------------------------------------------
+//// Set a "palette" of colors in the range of color indices used by
+//// PGIMAG.
+////-----------------------------------------------------------------------
+//	float GL[] = {0.0, 1.0};
+//	float GR[] = {0.0, 1.0};
+//	float GG[] = {0.0, 1.0};
+//	float GB[] = {0.0, 1.0};
+//	float RL[] = {-0.5, 0.0, 0.17, 0.33, 0.50, 0.67, 0.83, 1.0, 1.7};
+//	float RR[] = { 0.0, 0.0,  0.0,  0.0,  0.6,  1.0,  1.0, 1.0, 1.0};
+//	float RG[] = { 0.0, 0.0,  0.0,  1.0,  1.0,  1.0,  0.6, 0.0, 1.0};
+//	float RB[] = { 0.0, 0.3,  0.8,  1.0,  0.3,  0.0,  0.0, 0.0, 1.0};
+//	float HL[] = {0.0, 0.2, 0.4, 0.6, 1.0};
+//	float HR[] = {0.0, 0.5, 1.0, 1.0, 1.0};
+//	float HG[] = {0.0, 0.0, 0.5, 1.0, 1.0};
+//	float HB[] = {0.0, 0.0, 0.0, 0.3, 1.0};
+//	float WL[] = {0.0, 0.5, 0.5, 0.7, 0.7, 0.85, 0.85, 0.95, 0.95, 1.0};
+//	float WR[] = {0.0, 1.0, 0.0, 0.0, 0.3,  0.8,  0.3,  1.0,  1.0, 1.0};
+//	float WG[] = {0.0, 0.5, 0.4, 1.0, 0.0,  0.0,  0.2,  0.7,  1.0, 1.0};
+//	float WB[] = {0.0, 0.0, 0.0, 0.0, 0.4,  1.0,  0.0,  0.0, 0.95, 1.0};
+//	float AL[] = {0.0, 0.1, 0.1, 0.2, 0.2, 0.3, 0.3, 0.4, 0.4, 0.5, 0.5, 0.6, 0.6, 0.7, 0.7, 0.8, 0.8, 0.9, 0.9, 1.0};
+//	float AR[] = {0.0, 0.0, 0.3, 0.3, 0.5, 0.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0};
+//	float AG[] = {0.0, 0.0, 0.3, 0.3, 0.0, 0.0, 0.0, 0.0, 0.8, 0.8, 0.6, 0.6, 1.0, 1.0, 1.0, 1.0, 0.8, 0.8, 0.0, 0.0};
+//	float AB[] = {0.0, 0.0, 0.3, 0.3, 0.7, 0.7, 0.7, 0.7, 0.9, 0.9, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+//      
+//	if (TYPE == 1)
+//	{   
+//		//-- gray scale
+//		cpgctab(GL, GR, GG, GB, 2, CONTRA, BRIGHT);
+//	}
+//	else if (TYPE == 2) 
+//	{
+//		//-- rainbow
+//		cpgctab(RL, RR, RG, RB, 9, CONTRA, BRIGHT);
+//	}
+//	else if (TYPE == 3) 
+//	{
+//		//-- heat
+//		cpgctab(HL, HR, HG, HB, 5, CONTRA, BRIGHT);
+//	}
+//	else if (TYPE == 4) 
+//	{
+//		//-- weird IRAF
+//		cpgctab(WL, WR, WG, WB, 10, CONTRA, BRIGHT);
+//	}
+//	else if (TYPE == 5) 
+//	{
+//		//-- AIPS
+//		cpgctab(AL, AR, AG, AB, 20, CONTRA, BRIGHT);
+//	}
+//}
 
-	int dimx = acfStructure->nsubint;
-	int dimy = acfStructure->nchn;
-	double bw = acfStructure->bw;
-  
-
-	float heat_l[] = {0.0, 0.2, 0.4, 0.6, 1.0};
-	float heat_r[] = {0.0, 0.5, 1.0, 1.0, 1.0};
-	float heat_g[] = {0.0, 0.0, 0.5, 1.0, 1.0};
-	float heat_b[] = {0.0, 0.0, 0.0, 0.3, 1.0};
-
-	double f1 = acfStructure->cFreq-bw/2.0-2.0*bw/dimy; // MHz
-	double f2 = acfStructure->cFreq+bw/2.0-2.0*bw/dimy; // MHz
-	//printf ("f1 f2: %lf %lf\n", f1, f2);
-
-	zmin=0; 
-	zmax=find_peak_value (dimx*dimy, acfStructure->dynPlot[0]);
-	//double f1 = 1241; // MHz
-	//double f2 = 1497; // MHz
-	/*The transformation matrix TR is used to calculate the world
-	coordinates of the center of the "cell" that represents each
-	array element. The world coordinates of the center of the cell
-	corresponding to array element A(I,J) are given by:
-	X = TR(1) + TR(2)*I + TR(3)*J
-	Y = TR(4) + TR(5)*I + TR(6)*J
-	Usually TR(3) and TR(5) are zero -- unless the coordinate
-	transformation involves a rotation or shear.  The corners of the
-	quadrilateral region that is shaded by PGIMAG are given by
-	applying this transformation to (I1-0.5,J1-0.5), (I2+0.5, J2+0.5).*/
-  
-	//tr[0]=0;
-	//tr[1]=(float)(dimy)/dimx;
-	//tr[2]=0;
-	//tr[3]=0;
-	//tr[4]=0;
-	//tr[5]=1;
-  
-	tr[0]=-0.5;
-       	tr[1]=1;
-       	tr[2]=0;
-      	tr[3]=f2+0.5;
-      	tr[4]=0;
-      	tr[5]=-bw/dimy;
-
-	// plot 
-	//cpgbeg(0,"?",1,1);
-	cpgbeg(0,dname,1,1);
-	//cpgbeg(0,"2/xs",1,1);
-      	cpgsch(1.2); // set character height
-      	cpgscf(2); // set character font
-	//cpgswin(0,dimx,164,132); // set window
-	cpgswin(0,dimx,f2,f1); // set window
-	//cpgsvp(0.1,0.9,0.1,0.9); // set viewport
-      	//cpgenv(1,dimx,f1,f2,0,0); // set window and viewport and draw labeled frame
-	cpgbox("BCTSIN",4,4,"BCTSIN",16,8);
-	//cpgbox("BCTSIN",10,5,"BCTSIN",50,5);
-      	cpglab("Subintegration","Frequency (MHz)",caption);
-      	//cpglab("Subintegration","Frequency (MHz)","Freq: 150.0 MHz BW: -32.000 MHz Length: 960.0 s");
-	//cpgtick(0,0,1024,0,1.0/64,0.1,0.2,0,0,"1");
-	//palett(3, -0.4, 0.3);
-	//cpgimag(tab,dimx,dimy,1,dimx,1,dimy,zmin,zmax,tr);
-	cpgctab(heat_l,heat_r,heat_g,heat_b,5,1.0,0.5);
-	cpgimag(acfStructure->dynPlot[0],dimx,dimy,1,dimx,1,dimy,zmin,zmax,tr);
-	//cpggray(acfStructure->dynPlot,dimx,dimy,1,dimx,1,dimy,zmin,zmax,tr);
-
-	cpgend();
-} 
-
-void palett(int TYPE, float CONTRA, float BRIGHT)
-{
-//-----------------------------------------------------------------------
-// Set a "palette" of colors in the range of color indices used by
-// PGIMAG.
-//-----------------------------------------------------------------------
-	float GL[] = {0.0, 1.0};
-	float GR[] = {0.0, 1.0};
-	float GG[] = {0.0, 1.0};
-	float GB[] = {0.0, 1.0};
-	float RL[] = {-0.5, 0.0, 0.17, 0.33, 0.50, 0.67, 0.83, 1.0, 1.7};
-	float RR[] = { 0.0, 0.0,  0.0,  0.0,  0.6,  1.0,  1.0, 1.0, 1.0};
-	float RG[] = { 0.0, 0.0,  0.0,  1.0,  1.0,  1.0,  0.6, 0.0, 1.0};
-	float RB[] = { 0.0, 0.3,  0.8,  1.0,  0.3,  0.0,  0.0, 0.0, 1.0};
-	float HL[] = {0.0, 0.2, 0.4, 0.6, 1.0};
-	float HR[] = {0.0, 0.5, 1.0, 1.0, 1.0};
-	float HG[] = {0.0, 0.0, 0.5, 1.0, 1.0};
-	float HB[] = {0.0, 0.0, 0.0, 0.3, 1.0};
-	float WL[] = {0.0, 0.5, 0.5, 0.7, 0.7, 0.85, 0.85, 0.95, 0.95, 1.0};
-	float WR[] = {0.0, 1.0, 0.0, 0.0, 0.3,  0.8,  0.3,  1.0,  1.0, 1.0};
-	float WG[] = {0.0, 0.5, 0.4, 1.0, 0.0,  0.0,  0.2,  0.7,  1.0, 1.0};
-	float WB[] = {0.0, 0.0, 0.0, 0.0, 0.4,  1.0,  0.0,  0.0, 0.95, 1.0};
-	float AL[] = {0.0, 0.1, 0.1, 0.2, 0.2, 0.3, 0.3, 0.4, 0.4, 0.5, 0.5, 0.6, 0.6, 0.7, 0.7, 0.8, 0.8, 0.9, 0.9, 1.0};
-	float AR[] = {0.0, 0.0, 0.3, 0.3, 0.5, 0.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0};
-	float AG[] = {0.0, 0.0, 0.3, 0.3, 0.0, 0.0, 0.0, 0.0, 0.8, 0.8, 0.6, 0.6, 1.0, 1.0, 1.0, 1.0, 0.8, 0.8, 0.0, 0.0};
-	float AB[] = {0.0, 0.0, 0.3, 0.3, 0.7, 0.7, 0.7, 0.7, 0.9, 0.9, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
-      
-	if (TYPE == 1)
-	{   
-		//-- gray scale
-		cpgctab(GL, GR, GG, GB, 2, CONTRA, BRIGHT);
-	}
-	else if (TYPE == 2) 
-	{
-		//-- rainbow
-		cpgctab(RL, RR, RG, RB, 9, CONTRA, BRIGHT);
-	}
-	else if (TYPE == 3) 
-	{
-		//-- heat
-		cpgctab(HL, HR, HG, HB, 5, CONTRA, BRIGHT);
-	}
-	else if (TYPE == 4) 
-	{
-		//-- weird IRAF
-		cpgctab(WL, WR, WG, WB, 10, CONTRA, BRIGHT);
-	}
-	else if (TYPE == 5) 
-	{
-		//-- AIPS
-		cpgctab(AL, AR, AG, AB, 20, CONTRA, BRIGHT);
-	}
-}
-
-int plotDynSpec (char *pname, char *dname)
-{
-	FILE *fin;
-	char start[128];
-	double tint,bw,cFreq;
-	int nsub,nchn;
-	float val;
-	int n1, n2;
-	float *dynSpec;
-
-	int i;
-
-	int dimx;
-	int dimy;
-	float zmin,zmax;            /* min et max des valeurs de la fonction */
-	float tr[6];                /* matrice utilisee par pgimag */
-
-	float heat_l[] = {0.0, 0.2, 0.4, 0.6, 1.0};
-	float heat_r[] = {0.0, 0.5, 1.0, 1.0, 1.0};
-	float heat_g[] = {0.0, 0.0, 0.5, 1.0, 1.0};
-	float heat_b[] = {0.0, 0.0, 0.0, 0.3, 1.0};
-	char caption[1024];
-
-	if ((fin=fopen(pname,"r"))==NULL)
-	{
-		printf ("Can't open dynamic spectrum!\n");
-		exit(1);
-	}
-
-      	// Find the start of dynamic spectrum, which contains basic info
-	while (!feof(fin))
-	{
-		if (fscanf(fin,"%s %d %d %lf %lf %lf",start,&nsub,&nchn,&bw,&tint,&cFreq)==6)
-		{
-			if (strcasecmp(start,"START")==0)
-			{
-				break;
-			}
-		}
-		//else 
-		//	return 1;
-	}
-
-	sprintf (caption, "%s %.2f %s %s %.2f %s %s %.2f %s", "Freq:", cFreq, "MHz", "BW:", bw, "MHz", "Length:", tint, "s");
-
-	dynSpec = (float*)malloc(sizeof(float)*nsub*nchn);
-
-	i = 0;
-	while (fscanf(fin,"%d %d %f", &n1, &n2, &val)==3)
-	{
-		dynSpec[i] = val;
-		i++;
-	}
-
-	if (fclose(fin))
-	{
-		printf ("Can't close dynamic spectrum!\n");
-		exit(1);
-	}
-
-	dimx = nsub;
-	dimy = nchn;
-  
-
-	zmin=0; 
-	zmax=find_peak_value (dimx*dimy, dynSpec);
-
-	double f1 = cFreq-bw/2.0-2.0*bw/dimy; // MHz
-	double f2 = cFreq+bw/2.0-2.0*bw/dimy; // MHz
-	//double f1 = 1241; // MHz
-	//double f2 = 1497; // MHz
-	/*The transformation matrix TR is used to calculate the world
-	coordinates of the center of the "cell" that represents each
-	array element. The world coordinates of the center of the cell
-	corresponding to array element A(I,J) are given by:
-	X = TR(1) + TR(2)*I + TR(3)*J
-	Y = TR(4) + TR(5)*I + TR(6)*J
-	Usually TR(3) and TR(5) are zero -- unless the coordinate
-	transformation involves a rotation or shear.  The corners of the
-	quadrilateral region that is shaded by PGIMAG are given by
-	applying this transformation to (I1-0.5,J1-0.5), (I2+0.5, J2+0.5).*/
-  
-	//tr[0]=0;
-	//tr[1]=(float)(dimy)/dimx;
-	//tr[2]=0;
-	//tr[3]=0;
-	//tr[4]=0;
-	//tr[5]=1;
-  
-	tr[0]=-0.5;
-       	tr[1]=1;
-       	tr[2]=0;
-      	tr[3]=f2+0.5;
-      	tr[4]=0;
-      	tr[5]=-bw/dimy;
- 
-	// plot 
-	//cpgbeg(0,"?",1,1);
-	cpgbeg(0,dname,1,1);
-	//cpgbeg(0,"2/xs",1,1);
-      	cpgsch(1.2); // set character height
-      	cpgscf(2); // set character font
-	cpgswin(0,dimx,f2,f1); // set window
-	//cpgsvp(0.1,0.9,0.1,0.9); // set viewport
-      	//cpgenv(1,dimx,f1,f2,0,0); // set window and viewport and draw labeled frame
-	cpgbox("BCTSIN",4,4,"BCTSIN",16,8);
-      	cpglab("Subintegration","Frequency (MHz)",caption);
-	//cpgtick(0,0,1024,0,1.0/64,0.1,0.2,0,0,"1");
-	//palett(3, -0.4, 0.3);
-	//cpgimag(tab,dimx,dimy,1,dimx,1,dimy,zmin,zmax,tr);
-	//cpggray(dynSpec,dimx,dimy,1,dimx,1,dimy,zmin,zmax,tr);
-	cpgctab(heat_l,heat_r,heat_g,heat_b,5,1.0,0.5);
-	cpgimag(dynSpec,dimx,dimy,1,dimx,1,dimy,zmin,zmax,tr);
-
-	cpgend();
-
-	free(dynSpec);
-
-	return 0;
-} 
+//int plotDynSpec (char *pname, char *dname)
+//{
+//	FILE *fin;
+//	char start[128];
+//	double tint,bw,cFreq;
+//	int nsub,nchn;
+//	float val;
+//	int n1, n2;
+//	float *dynSpec;
+//
+//	int i;
+//
+//	int dimx;
+//	int dimy;
+//	float zmin,zmax;            /* min et max des valeurs de la fonction */
+//	float tr[6];                /* matrice utilisee par pgimag */
+//
+//	float heat_l[] = {0.0, 0.2, 0.4, 0.6, 1.0};
+//	float heat_r[] = {0.0, 0.5, 1.0, 1.0, 1.0};
+//	float heat_g[] = {0.0, 0.0, 0.5, 1.0, 1.0};
+//	float heat_b[] = {0.0, 0.0, 0.0, 0.3, 1.0};
+//	char caption[1024];
+//
+//	if ((fin=fopen(pname,"r"))==NULL)
+//	{
+//		printf ("Can't open dynamic spectrum!\n");
+//		exit(1);
+//	}
+//
+//      	// Find the start of dynamic spectrum, which contains basic info
+//	while (!feof(fin))
+//	{
+//		if (fscanf(fin,"%s %d %d %lf %lf %lf",start,&nsub,&nchn,&bw,&tint,&cFreq)==6)
+//		{
+//			if (strcasecmp(start,"START")==0)
+//			{
+//				break;
+//			}
+//		}
+//		//else 
+//		//	return 1;
+//	}
+//
+//	sprintf (caption, "%s %.2f %s %s %.2f %s %s %.2f %s", "Freq:", cFreq, "MHz", "BW:", bw, "MHz", "Length:", tint, "s");
+//
+//	dynSpec = (float*)malloc(sizeof(float)*nsub*nchn);
+//
+//	i = 0;
+//	while (fscanf(fin,"%d %d %f", &n1, &n2, &val)==3)
+//	{
+//		dynSpec[i] = val;
+//		i++;
+//	}
+//
+//	if (fclose(fin))
+//	{
+//		printf ("Can't close dynamic spectrum!\n");
+//		exit(1);
+//	}
+//
+//	dimx = nsub;
+//	dimy = nchn;
+//  
+//
+//	zmin=0; 
+//	zmax=find_peak_value (dimx*dimy, dynSpec);
+//
+//	double f1 = cFreq-bw/2.0-2.0*bw/dimy; // MHz
+//	double f2 = cFreq+bw/2.0-2.0*bw/dimy; // MHz
+//	//double f1 = 1241; // MHz
+//	//double f2 = 1497; // MHz
+//	/*The transformation matrix TR is used to calculate the world
+//	coordinates of the center of the "cell" that represents each
+//	array element. The world coordinates of the center of the cell
+//	corresponding to array element A(I,J) are given by:
+//	X = TR(1) + TR(2)*I + TR(3)*J
+//	Y = TR(4) + TR(5)*I + TR(6)*J
+//	Usually TR(3) and TR(5) are zero -- unless the coordinate
+//	transformation involves a rotation or shear.  The corners of the
+//	quadrilateral region that is shaded by PGIMAG are given by
+//	applying this transformation to (I1-0.5,J1-0.5), (I2+0.5, J2+0.5).*/
+//  
+//	//tr[0]=0;
+//	//tr[1]=(float)(dimy)/dimx;
+//	//tr[2]=0;
+//	//tr[3]=0;
+//	//tr[4]=0;
+//	//tr[5]=1;
+//  
+//	tr[0]=-0.5;
+//       	tr[1]=1;
+//       	tr[2]=0;
+//      	tr[3]=f2+0.5;
+//      	tr[4]=0;
+//      	tr[5]=-bw/dimy;
+// 
+//	// plot 
+//	//cpgbeg(0,"?",1,1);
+//	cpgbeg(0,dname,1,1);
+//	//cpgbeg(0,"2/xs",1,1);
+//      	cpgsch(1.2); // set character height
+//      	cpgscf(2); // set character font
+//	cpgswin(0,dimx,f2,f1); // set window
+//	//cpgsvp(0.1,0.9,0.1,0.9); // set viewport
+//      	//cpgenv(1,dimx,f1,f2,0,0); // set window and viewport and draw labeled frame
+//	cpgbox("BCTSIN",4,4,"BCTSIN",16,8);
+//      	cpglab("Subintegration","Frequency (MHz)",caption);
+//	//cpgtick(0,0,1024,0,1.0/64,0.1,0.2,0,0,"1");
+//	//palett(3, -0.4, 0.3);
+//	//cpgimag(tab,dimx,dimy,1,dimx,1,dimy,zmin,zmax,tr);
+//	//cpggray(dynSpec,dimx,dimy,1,dimx,1,dimy,zmin,zmax,tr);
+//	cpgctab(heat_l,heat_r,heat_g,heat_b,5,1.0,0.5);
+//	cpgimag(dynSpec,dimx,dimy,1,dimx,1,dimy,zmin,zmax,tr);
+//
+//	cpgend();
+//
+//	free(dynSpec);
+//
+//	return 0;
+//} 
 
 int qualifyVar (acfStruct *acfStructure, noiseStruct *noiseStructure, controlStruct *control)
 {
@@ -1379,16 +1379,16 @@ int qualifyVar (acfStruct *acfStructure, noiseStruct *noiseStructure, controlStr
 	int nsub = control->nsub;
 	int nchan = control->nchan;
 
-	int step = 100;
-	float *xHis, *val;
-	float *xHisN, *valN;
-	float max, max1, max2; 
-	float maxV, maxVN;
-	float minV, minVN;
-	char caption[1024];
+	//int step = 100;
+	//float *xHis, *val;
+	//float *xHisN, *valN;
+	//float max, max1, max2; 
+	//float maxV, maxVN;
+	//float minV, minVN;
+	//char caption[1024];
 
-	float xThreshold[100];
-	float yThreshold[100];
+	//float xThreshold[100];
+	//float yThreshold[100];
 
 	int num;
 
@@ -1406,11 +1406,11 @@ int qualifyVar (acfStruct *acfStructure, noiseStruct *noiseStructure, controlStr
 		exit(1);
 	}
 
-	for (i=0; i<100; i++)
-	{
-		xThreshold[i] = noiseStructure->detection;
-		yThreshold[i] = i;
-	}
+	//for (i=0; i<100; i++)
+	//{
+	//	xThreshold[i] = noiseStructure->detection;
+	//	yThreshold[i] = i;
+	//}
 
 	m = (float*)malloc(sizeof(float)*n);
 	var = (float*)malloc(sizeof(float)*n);
@@ -1474,6 +1474,7 @@ int qualifyVar (acfStruct *acfStructure, noiseStruct *noiseStructure, controlStr
 
 	//printf ("Results: %f %f %f %f %f\n", m0, meanVar, varVar, meanVar_n, varVar_n);
 
+	/*
 	maxV = find_max_value(n,var);
 	minV = find_min_value(n,var);
 	maxVN = find_max_value(n_n,var_n);
@@ -1516,6 +1517,7 @@ int qualifyVar (acfStruct *acfStructure, noiseStruct *noiseStructure, controlStr
 		free(xHisN);
 		free(valN);
 	}
+	*/
 
 	free(m);
 	free(var);

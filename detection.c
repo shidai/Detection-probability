@@ -115,11 +115,11 @@ int main (int argc, char* argv[])
 					// simulate dynamic spectra
 					calculateScintScale (&acfStructure, &control);
 
-					if (control.noplot==0 && n == 1)
-					{
-						// plot while simulating
-						heatMap (&acfStructure, dname);
-					}
+					//if (control.noplot==0 && n == 1)
+					//{
+					//	// plot while simulating
+					//	heatMap (&acfStructure, dname);
+					//}
 
 					qualifyVar (&acfStructure, &noiseStructure, &control);
 
@@ -144,10 +144,10 @@ int main (int argc, char* argv[])
 		// deallocate memory
 		deallocateMemory (&acfStructure, &noiseStructure);
 	}
-	else
-	{
-		plotDynSpec(pname, dname);
-	}
+	//else
+	//{
+	//	plotDynSpec(pname, dname);
+	//}
 
 	if (fclose(fin))
 	{
