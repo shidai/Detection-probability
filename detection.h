@@ -925,7 +925,7 @@ int readParams(char *fname, char *dname, int n, controlStruct *control)
 		exit(1);
 	}
 
-	printf("Reading parameters...\n");
+	//printf("Reading parameters...\n");
 
       	// Find the start observation
 	while (!feof(fin))
@@ -942,7 +942,6 @@ int readParams(char *fname, char *dname, int n, controlStruct *control)
 			return 1;
 	}
 
-	printf("Got to this bit with %d\n",endit);
 	if (endit==-1)
 		return 1;
 
