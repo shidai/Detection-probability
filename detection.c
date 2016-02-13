@@ -102,7 +102,7 @@ int main (int argc, char* argv[])
 			tdiff = control.scint_ts0+i*control.scint_ts_step;
 			for (fdiff=control.scint_freqbw0; fdiff<control.scint_freqbw1; fdiff+=control.scint_f_step)
 			{
-				printf ("tdiff fdiff: %lf %lf\n", tdiff, fdiff);
+				//printf ("tdiff fdiff: %lf %lf\n", tdiff, fdiff);
 				flux0 = control.cFlux0;
 				flux1 = control.cFlux1;
 				
@@ -114,7 +114,7 @@ int main (int argc, char* argv[])
 				while (fabs(acfStructure.probability-0.8)>=0.01)
 				{
 					control.cFlux = flux0+(flux1-flux0)/2.0;
-					printf ("%lf %lf %.8lf %.3f\n", tdiff, fdiff, control.cFlux, acfStructure.probability);
+					//printf ("%lf %lf %.8lf %.3f\n", tdiff, fdiff, control.cFlux, acfStructure.probability);
 		
 					// simulate dynamic spectra
 					calculateScintScale (&acfStructure, &control);
