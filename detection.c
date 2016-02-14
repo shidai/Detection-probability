@@ -118,13 +118,15 @@ int main (int argc, char* argv[])
 		//for (i=id; i<=num; i+=p)
 		for (i=id; i<nt; i+=p)
 		{
-			tdiff = tdiss[i];
+			tdiff = pow(10.0, tdiss[i]);   // log scale
+			//tdiff = tdiss[i];
 			//tdiff = control.scint_ts0+i*control.scint_ts_step;
 
 			for (j=0; j<nf; j++)
 			//for (fdiff=control.scint_freqbw0; fdiff<control.scint_freqbw1; fdiff+=control.scint_f_step)
 			{
-				fdiff = fdiss[j];
+				fdiff = pow(10.0, fdiss[j]);   // log scale
+				//fdiff = fdiss[j];
 				//printf ("tdiff fdiff: %lf %lf\n", tdiff, fdiff);
 				flux0 = control.cFlux0;
 				flux1 = control.cFlux1;
