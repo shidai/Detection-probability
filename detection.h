@@ -64,14 +64,14 @@ typedef struct controlStruct {
 	int nchan; // number of subchannels
 
 	double scint_freqbw;   // scintillation bandwidth
-	double scint_freqbw0;   // scintillation bandwidth
-	double scint_freqbw1;   // scintillation bandwidth
-	double scint_f_step;   // scintillation bandwidth
+	//double scint_freqbw0;   // scintillation bandwidth
+	//double scint_freqbw1;   // scintillation bandwidth
+	//double scint_f_step;   // scintillation bandwidth
 
 	double scint_ts;       // scintillation timescale
-	double scint_ts0;       // scintillation timescale
-	double scint_ts1;       // scintillation timescale
-	double scint_ts_step;       // scintillation timescale
+	//double scint_ts0;       // scintillation timescale
+	//double scint_ts1;       // scintillation timescale
+	//double scint_ts_step;       // scintillation timescale
 
 	double whiteLevel;   // white noise level, mJy
 	double cFlux;        // flux density of pulsars, mJy
@@ -115,6 +115,9 @@ float find_min_value (int n, float *s);
 int calNoise (noiseStruct *noiseStructure, controlStruct *control);
 int simNoise (noiseStruct *noiseStructure, long seed, int nDynSpec);
 int calThreshold (noiseStruct *noiseStructure);
+
+void readDiss (char *Tname, char *Fname, double *tdiss, double *fdiss);
+int readDissNum (char *Tname);
 
 int calNoise (noiseStruct *noiseStructure, controlStruct *control)
 {
@@ -968,41 +971,23 @@ int readParams(char *fname, char *dname, int n, controlStruct *control)
 			endit=1;
 		else
 		{
-			//if (strcasecmp(param,"PHEAD")==0)
-			//	fscanf(fin,"%s",control->primaryHeaderParams);
-			//else if (strcasecmp(param,"SRC")==0)
-			//     	fscanf(fin,"%s",control->src);
-			//else if (strcasecmp(param,"EXACT_EPHEMERIS")==0)
-			//	fscanf(fin,"%s",control->exact_ephemeris);
-			//else if (strcasecmp(param,"TEMPLATE")==0)
-			//	fscanf(fin,"%s",control->template);
 			//if (strcasecmp(param,"SCINT_TS")==0)
 			//	fscanf(fin,"%lf",&(control->scint_ts));
-			if (strcasecmp(param,"SCINT_TS0")==0)
-				fscanf(fin,"%lf",&(control->scint_ts0));
-			else if (strcasecmp(param,"SCINT_TS1")==0)
-				fscanf(fin,"%lf",&(control->scint_ts1));
-			else if (strcasecmp(param,"SCINT_TS_STEP")==0)
-				fscanf(fin,"%lf",&(control->scint_ts_step));
+			//if (strcasecmp(param,"SCINT_TS0")==0)
+			//	fscanf(fin,"%lf",&(control->scint_ts0));
+			//else if (strcasecmp(param,"SCINT_TS1")==0)
+			//	fscanf(fin,"%lf",&(control->scint_ts1));
+			//else if (strcasecmp(param,"SCINT_TS_STEP")==0)
+			//	fscanf(fin,"%lf",&(control->scint_ts_step));
 			//else if (strcasecmp(param,"SCINT_FREQBW")==0)
 			//	fscanf(fin,"%lf",&(control->scint_freqbw));	  
-			else if (strcasecmp(param,"SCINT_FREQBW0")==0)
-				fscanf(fin,"%lf",&(control->scint_freqbw0));	  
-			else if (strcasecmp(param,"SCINT_FREQBW1")==0)
-				fscanf(fin,"%lf",&(control->scint_freqbw1));	  
-			else if (strcasecmp(param,"SCINT_F_STEP")==0)
-				fscanf(fin,"%lf",&(control->scint_f_step));	  
-			//else if (strcasecmp(param,"FILE")==0)
-			//	fscanf(fin,"%s",control->fname);
-			//else if (strcasecmp(param,"TYPE")==0)
-			//	fscanf(fin,"%s",control->type);
-			//else if (strcasecmp(param,"STT_IMJD")==0)
-			//	fscanf(fin,"%d",&(control->stt_imjd));
-			//else if (strcasecmp(param,"STT_SMJD")==0)
-			//	fscanf(fin,"%lf",&(control->stt_smjd));
-			//else if (strcasecmp(param,"STT_OFFS")==0)
-      			//	fscanf(fin,"%lf",&(control->stt_offs));
-			else if (strcasecmp(param,"TSUB")==0)
+			//else if (strcasecmp(param,"SCINT_FREQBW0")==0)
+			//	fscanf(fin,"%lf",&(control->scint_freqbw0));	  
+			//else if (strcasecmp(param,"SCINT_FREQBW1")==0)
+			//	fscanf(fin,"%lf",&(control->scint_freqbw1));	  
+			//else if (strcasecmp(param,"SCINT_F_STEP")==0)
+			//	fscanf(fin,"%lf",&(control->scint_f_step));	  
+			if (strcasecmp(param,"TSUB")==0)
       				fscanf(fin,"%lf",&(control->tsub));
 			else if (strcasecmp(param,"CFREQ")==0)
       				fscanf(fin,"%lf",&(control->cFreq));
@@ -1010,37 +995,14 @@ int readParams(char *fname, char *dname, int n, controlStruct *control)
       				fscanf(fin,"%lf",&(control->chanBW));
 			else if (strcasecmp(param,"NCHAN")==0)
 			      	fscanf(fin,"%d",&(control->nchan));
-			//else if (strcasecmp(param,"NBIN")==0)
-      			//	fscanf(fin,"%d",&(control->nbin));
-			//else if (strcasecmp(param,"NPOL")==0)
-      			//	fscanf(fin,"%d",&(control->npol));
 			else if (strcasecmp(param,"NSUB")==0)
       				fscanf(fin,"%d",&(control->nsub));
-			//else if (strcasecmp(param,"SEGLENGTH")==0)
-      			//	fscanf(fin,"%lf",&(control->segLength));
-			//else if (strcasecmp(param,"NFREQ_COEFF")==0)
-      			//	fscanf(fin,"%d",&(control->nfreqcoeff));
-			//else if (strcasecmp(param,"NTIME_COEFF")==0)
-			//      	fscanf(fin,"%d",&(control->ntimecoeff));
 			else if (strcasecmp(param,"WHITE_LEVEL")==0)
       				fscanf(fin,"%lf",&(control->whiteLevel));
-			//else if (strcasecmp(param,"TSYS")==0)
-      			//	fscanf(fin,"%lf",&(control->tsys));
-			//else if (strcasecmp(param,"TSKY")==0)
-      			//	fscanf(fin,"%lf",&(control->tsky));
-			//else if (strcasecmp(param,"GAIN")==0)
-      			//	fscanf(fin,"%lf",&(control->gain));
 			else if (strcasecmp(param,"CFLUX0")==0)
 			      	fscanf(fin,"%lf",&(control->cFlux0));
 			else if (strcasecmp(param,"CFLUX1")==0)
 			      	fscanf(fin,"%lf",&(control->cFlux1));
-			//else if (strcasecmp(param,"SI")==0)
-			//	fscanf(fin,"%lf",&(control->si));
-			//else if (strcasecmp(param,"phaseResolvedSI")==0)
-			//{
-			//	fscanf(fin,"%s",control->phaseResolvedSI);
-			//	control->simProf = 1;
-			//}
 		}
 	} while (endit==0);
 
@@ -1081,40 +1043,23 @@ void initialiseControl(controlStruct *control)
 	control->n = 1; // simulate 1 dynamic spectrum by default
 
 	// Standard defaults
-	//strcpy(control->type,"PSR");
-	//control->nbin = 128;
 	control->nchan = 32;
-	//control->npol = 1;
 	control->nsub = 8;
 	control->cFreq = 1400.0;
 	control->chanBW = -1;   // MHz
-	//control->segLength = 48000;
-	//control->nfreqcoeff = 16;
-	//control->ntimecoeff = 16;
-	//control->stt_imjd = 55000;
-	//control->stt_smjd = 5234.0;
-	//control->stt_offs = 0.1234;
 	control->tsub = 120;  // second
 	control->whiteLevel = 0;   // mJy
 	control->scint_ts  = 0.0;  // second
-	control->scint_ts0  = 0.0;  // second
-	control->scint_ts1  = 0.0;  // second
-	control->scint_ts_step  = 0.0;  // second
+	//control->scint_ts0  = 0.0;  // second
+	//control->scint_ts1  = 0.0;  // second
+	//control->scint_ts_step  = 0.0;  // second
 	control->scint_freqbw = 0.0;   // MHz
-	control->scint_freqbw0 = 0.0;   // MHz
-	control->scint_freqbw1 = 0.0;   // MHz
-	control->scint_f_step = 0.0;   // MHz
-	//control->tsys = 0.0;
-	//control->tsky = 0.0;
-	//control->gain = 0.0;
+	//control->scint_freqbw0 = 0.0;   // MHz
+	//control->scint_freqbw1 = 0.0;   // MHz
+	//control->scint_f_step = 0.0;   // MHz
 	control->cFlux = 0.0;   // mJy
 	control->cFlux0 = 0.0;   // mJy
 	control->cFlux1 = 0.0;   // mJy
-	//control->si = 0.0;
-	//control->radioNoise = 0.0;
-	//control->bat = 0;
-	//control->simProf = 0; // default: do not simulate profile with phase-resolved SI
-  // Note that the DM comes from the ephemeris
 }
 
 //void heatMap (acfStruct *acfStructure, char *dname)
@@ -1716,3 +1661,77 @@ float find_min_value (int n, float *s)
 	return c;
 }
 
+int readDissNum (char *Tname)
+{
+	int nt;
+	FILE *fint;
+	double temp;
+
+	if ((fint=fopen(Tname, "r"))==NULL)
+	{
+		printf ("Can't open scintillation time-scale...\n");
+		exit(1);
+	}
+
+	nt = 0;
+	while (fscanf(fint, "%lf", &temp) == 1)
+	{
+		nt++;
+	}
+
+	if (fclose(fint))
+	{
+		printf ("Can't close scintillation time-scale...\n");
+		exit(1);
+	}
+
+	return nt;
+}
+
+
+
+void readDiss (char *Tname, char *Fname, double *tdiss, double *fdiss)
+{
+	int i;
+	FILE *fint, *finf;
+	double temp;
+
+	///////////////////////////////////////////////////////////////////////
+	if ((fint=fopen(Tname, "r"))==NULL)
+	{
+		printf ("Can't open scintillation time-scale...\n");
+		exit(1);
+	}
+
+	if ((finf=fopen(Fname, "r"))==NULL)
+	{
+		printf ("Can't open scintillation bandwidth...\n");
+		exit(1);
+	}
+
+	i = 0;
+	while (fscanf(fint, "%lf", &temp) == 1)
+	{
+		tdiss[i] = temp;
+		i++;
+	}
+
+	i = 0;
+	while (fscanf(finf, "%lf", &temp) == 1)
+	{
+		fdiss[i] = temp;
+		i++;
+	}
+
+	if (fclose(fint))
+	{
+		printf ("Can't close scintillation time-scale...\n");
+		exit(1);
+	}
+
+	if (fclose(finf))
+	{
+		printf ("Can't close scintillation time-scale...\n");
+		exit(1);
+	}
+}

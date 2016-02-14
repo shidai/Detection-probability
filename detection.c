@@ -13,7 +13,7 @@ int main (int argc, char* argv[])
 {
 	int id;  //  process rank
 	int p;   //  number of processes
-	int num;
+	//int num;
 	int nMax;
 
 	MPI_Init (&argc, &argv);
@@ -26,11 +26,17 @@ int main (int argc, char* argv[])
 	noiseStruct noiseStructure;
 
 	char fname[1024];   // read in parameter file
+	char Tname[1024];   // read in scintillation timescale
+	char Fname[1024];   // read in scintillation bandwidth
+
+	int nt, nf;
+	double *tdiss, *fdiss;
+
 	//char oname[1024];   // output file name
 	//char pname[1024];   // file to plot
 	char dname[1024];   // graphics device
 
-	int i;
+	int i, j;
 	int n = 1;  // number of dynamic spectrum to simulate
 
 	double flux0;
@@ -47,6 +53,8 @@ int main (int argc, char* argv[])
 		if (strcmp(argv[i],"-f") == 0)
 		{
 			strcpy(fname,argv[++i]);
+			strcpy(Tname,argv[++i]);
+			strcpy(Fname,argv[++i]);
 			printf ("Parameters are in %s\n", fname);
 		}
 		//else if (strcmp(argv[i],"-o")==0)
@@ -76,6 +84,12 @@ int main (int argc, char* argv[])
 		//}
 	}
 
+	nt = readDissNum (Tname);
+	nf = readDissNum (Fname);
+	tdiss = (double *)malloc(sizeof(double)*nt);
+	fdiss = (double *)malloc(sizeof(double)*nf);
+	readDiss (Tname, Fname, tdiss, fdiss);
+
 	sprintf(dname, "%s", "1/xs");
 	/*
 	if ((fin=fopen(oname, "w"))==NULL)
@@ -99,13 +113,18 @@ int main (int argc, char* argv[])
 
 		calNoise (&noiseStructure, &control);
 
-		num = (int)((control.scint_ts1-control.scint_ts0)/control.scint_ts_step);
+		//num = (int)((control.scint_ts1-control.scint_ts0)/control.scint_ts_step);
 		//for (tdiff=control.scint_ts0; tdiff<control.scint_ts1; tdiff+=control.scint_ts_step)
-		for (i=id; i<=num; i+=p)
+		//for (i=id; i<=num; i+=p)
+		for (i=id; i<nt; i+=p)
 		{
-			tdiff = control.scint_ts0+i*control.scint_ts_step;
-			for (fdiff=control.scint_freqbw0; fdiff<control.scint_freqbw1; fdiff+=control.scint_f_step)
+			tdiff = tdiss[i];
+			//tdiff = control.scint_ts0+i*control.scint_ts_step;
+
+			for (j=0; j<nf; j++)
+			//for (fdiff=control.scint_freqbw0; fdiff<control.scint_freqbw1; fdiff+=control.scint_f_step)
 			{
+				fdiff = fdiss[j];
 				//printf ("tdiff fdiff: %lf %lf\n", tdiff, fdiff);
 				flux0 = control.cFlux0;
 				flux1 = control.cFlux1;
@@ -168,6 +187,8 @@ int main (int argc, char* argv[])
 	}
 	*/
 
+	free(tdiss);
+	free(fdiss);
 	return 0;
 }
 
