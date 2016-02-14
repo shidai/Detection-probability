@@ -94,8 +94,8 @@ int main (int argc, char* argv[])
 		//readParams (fname,oname,dname,n,&control);
 		printf ("Finished reading parameters.\n");
 
-		preAllocateMemory (&acfStructure, &control);
-		allocateMemory (&acfStructure);
+		//preAllocateMemory (&acfStructure, &control);
+		//allocateMemory (&acfStructure);
 
 		calNoise (&noiseStructure, &control);
 
@@ -140,7 +140,7 @@ int main (int argc, char* argv[])
 					{
 						flux0 = control.cFlux;
 					}
-					nMax ++;
+					nMax++;
 				}
 				
 				printf ("%lf %lf %lf %f %d\n", tdiff, fdiff, control.cFlux, acfStructure.probability, nMax);

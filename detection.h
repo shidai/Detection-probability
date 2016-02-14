@@ -91,8 +91,8 @@ void allocateMemory (acfStruct *acfStructure);
 int simDynSpec (acfStruct *acfStructure, long seed, int nDynSpec);
 int calculateScintScale (acfStruct *acfStructure, controlStruct *control);
 //int calculateScintScale (acfStruct *acfStructure, controlStruct *control, long seed);
-//void preAllocateMemory (acfStruct *acfStructure);
-void preAllocateMemory (acfStruct *acfStructure, controlStruct *control);
+void preAllocateMemory (acfStruct *acfStructure);
+//void preAllocateMemory (acfStruct *acfStructure, controlStruct *control);
 float find_peak_value (int n, float *s);
 int calSize (acfStruct *acfStructure, double *size, double *ratio);
 int windowSize (acfStruct *acfStructure, double *size);
@@ -220,22 +220,23 @@ int calculateScintScale (acfStruct *acfStructure, controlStruct *control)
 
 	//printf ("Starting simulating dynamic spectrum\n");
 	// moved to preAllocateMemory
-	//acfStructure->n = control->n; 
-	//acfStructure->cFlux = control->cFlux; // mJy
-	//acfStructure->whiteLevel = control->whiteLevel; // mJy
-	//acfStructure->cFreq = control->cFreq; // MHz
-	//acfStructure->bw = fabs(control->chanBW*control->nchan); // MHz
-	//acfStructure->f0 = control->scint_freqbw;  // MHz
-	//acfStructure->tint = control->nsub*control->tsub;  // s
-	//acfStructure->t0 = control->scint_ts; // s
-	//acfStructure->nchn = control->nchan;
-	//acfStructure->nsubint = control->nsub;
+	acfStructure->n = control->n; 
+	acfStructure->cFlux = control->cFlux; // mJy
+	acfStructure->whiteLevel = control->whiteLevel; // mJy
+	acfStructure->cFreq = control->cFreq; // MHz
+	acfStructure->bw = fabs(control->chanBW*control->nchan); // MHz
+	acfStructure->f0 = control->scint_freqbw;  // MHz
+	acfStructure->tint = control->nsub*control->tsub;  // s
+	acfStructure->t0 = control->scint_ts; // s
+	acfStructure->nchn = control->nchan;
+	acfStructure->nsubint = control->nsub;
 	//printf ("Scintillation bandwidth: %lf (MHz)\n", acfStructure->f0);
 	//printf ("Scintillation time-scale: %lf (s)\n", acfStructure->t0);
 
 	// moved to main
-	//preAllocateMemory (acfStructure);
-	//allocateMemory (acfStructure);
+	//preAllocateMemory (acfStructure, control);
+	preAllocateMemory (acfStructure);
+	allocateMemory (acfStructure);
 
 	calACF (acfStructure);
 	power (acfStructure);
@@ -848,7 +849,8 @@ float find_peak_value (int n, float *s)
 	return temp[n-1];
 }
 						
-void preAllocateMemory (acfStruct *acfStructure, controlStruct *control)
+void preAllocateMemory (acfStruct *acfStructure)
+//void preAllocateMemory (acfStruct *acfStructure, controlStruct *control)
 {
 	double bw, f0, tint, t0;
 	int nchn, nsubint;
@@ -860,20 +862,18 @@ void preAllocateMemory (acfStruct *acfStructure, controlStruct *control)
 
 	int nf, ns;
 
-	acfStructure->n = control->n; 
-
-	acfStructure->cFlux = control->cFlux; // mJy
-	acfStructure->whiteLevel = control->whiteLevel; // mJy
-	acfStructure->cFreq = control->cFreq; // MHz
-	acfStructure->bw = fabs(control->chanBW*control->nchan); // MHz
-	acfStructure->f0 = control->scint_freqbw;  // MHz
-	acfStructure->tint = control->nsub*control->tsub;  // s
-	acfStructure->t0 = control->scint_ts; // s
+	//acfStructure->n = control->n; 
+	//acfStructure->cFlux = control->cFlux; // mJy
+	//acfStructure->whiteLevel = control->whiteLevel; // mJy
+	//acfStructure->cFreq = control->cFreq; // MHz
+	//acfStructure->bw = fabs(control->chanBW*control->nchan); // MHz
+	//acfStructure->f0 = control->scint_freqbw;  // MHz
+	//acfStructure->tint = control->nsub*control->tsub;  // s
+	//acfStructure->t0 = control->scint_ts; // s
+	//acfStructure->nchn = control->nchan;
+	//acfStructure->nsubint = control->nsub;
 	//printf ("Scintillation bandwidth: %lf (MHz)\n", acfStructure->f0);
 	//printf ("Scintillation time-scale: %lf (s)\n", acfStructure->t0);
-
-	acfStructure->nchn = control->nchan;
-	acfStructure->nsubint = control->nsub;
 
 	bw = acfStructure->bw;
 	f0 = acfStructure->f0;
