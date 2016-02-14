@@ -14,6 +14,7 @@ int main (int argc, char* argv[])
 	int id;  //  process rank
 	int p;   //  number of processes
 	int num;
+	int nMax;
 
 	MPI_Init (&argc, &argv);
 	MPI_Comm_rank (MPI_COMM_WORLD, &id);
@@ -93,6 +94,9 @@ int main (int argc, char* argv[])
 		//readParams (fname,oname,dname,n,&control);
 		printf ("Finished reading parameters.\n");
 
+		preAllocateMemory (&acfStructure, &control);
+		allocateMemory (&acfStructure);
+
 		calNoise (&noiseStructure, &control);
 
 		num = (int)((control.scint_ts1-control.scint_ts0)/control.scint_ts_step);
@@ -111,7 +115,8 @@ int main (int argc, char* argv[])
 
 				acfStructure.probability = 1.0;
 
-				while (fabs(acfStructure.probability-0.8)>=0.01)
+				nMax = 0;
+				while (fabs(acfStructure.probability-0.8)>=0.01 && nMax <= 100)
 				{
 					control.cFlux = flux0+(flux1-flux0)/2.0;
 					//printf ("%lf %lf %.8lf %.3f\n", tdiff, fdiff, control.cFlux, acfStructure.probability);
@@ -135,9 +140,10 @@ int main (int argc, char* argv[])
 					{
 						flux0 = control.cFlux;
 					}
+					nMax ++;
 				}
 				
-				printf ("%lf %lf %lf %f\n", tdiff, fdiff, control.cFlux, acfStructure.probability);
+				printf ("%lf %lf %lf %f %d\n", tdiff, fdiff, control.cFlux, acfStructure.probability, nMax);
 				//fprintf (fin, "%lf %lf %lf %f\n", tdiff, fdiff, control.cFlux, acfStructure.probability);
 			}
 		}
