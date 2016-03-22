@@ -165,6 +165,8 @@ int main (int argc, char* argv[])
 				}
 				
 				printf ("%lf %lf %lf %f %d\n", tdiff, fdiff, control.cFlux, acfStructure.probability, nMax);
+		
+				deallocateMemory (&acfStructure);
 				//fprintf (fin, "%lf %lf %lf %f\n", tdiff, fdiff, control.cFlux, acfStructure.probability);
 			}
 		}
@@ -174,7 +176,7 @@ int main (int argc, char* argv[])
 
 		printf ("Threshold: %f \n", noiseStructure.detection);
 		// deallocate memory
-		deallocateMemory (&acfStructure, &noiseStructure);
+		deallocateNoiseMemory (&acfStructure, &noiseStructure);
 	}
 	//else
 	//{
